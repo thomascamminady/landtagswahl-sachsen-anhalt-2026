@@ -47,4 +47,6 @@ und `http://localhost:8000` öffnen.
   Umfrage-Chart, die Ring-/Kreisdiagramme und die Hover-Vorschau.
 - **[Roboto](https://fonts.google.com/specimen/Roboto)** von Google Fonts –
   Apache License 2.0.
+- **[GitHub Corners](https://github.com/tholman/github-corners)** von Tim
+  Holman – MIT License. Das Octocat-Eckband oben rechts.
 - Der eigene Code in diesem Repository steht unter der [MIT-Lizenz](LICENSE).
