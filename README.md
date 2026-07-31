@@ -24,8 +24,10 @@ Näheres zur Methodik gibt es im "Hilfe"-Dialog auf der Seite selbst.
 
 ## Technik
 
-Reines HTML/CSS/JavaScript, keine Build-Schritte. Chart.js wird per CDN
-eingebunden. Lokal starten:
+Reines HTML/CSS/JavaScript (native ES-Module), keine Build-Schritte. Chart.js
+wird per CDN eingebunden. Der JavaScript-Code liegt aufgeteilt nach
+Zuständigkeit unter `js/` (Konstanten, Poll-Status, Dirichlet-Sampling,
+Chart-Rendering, UI-Wiring). Lokal starten:
 
 ```
 python3 -m http.server 8000
@@ -36,3 +38,13 @@ und `http://localhost:8000` öffnen.
 ## Datenquelle
 
 [dawum.de – Infratest dimap, Sachsen-Anhalt, 30.07.2026](https://dawum.de/Sachsen-Anhalt/Infratest_dimap/2026-07-30/)
+
+## Credits
+
+- **Daten**: [dawum.de](https://dawum.de/) (Umfragen-Aggregator) und
+  Infratest dimap (durchführendes Institut).
+- **[Chart.js](https://www.chartjs.org/)** – MIT License. Verwendet für den
+  Umfrage-Chart, die Ring-/Kreisdiagramme und die Hover-Vorschau.
+- **[Roboto](https://fonts.google.com/specimen/Roboto)** von Google Fonts –
+  Apache License 2.0.
+- Der eigene Code in diesem Repository steht unter der [MIT-Lizenz](LICENSE).
