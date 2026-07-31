@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Wahlumfrage-Simulator – Sachsen-Anhalt</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="top-row">
+        <div class="poll-card">
+          <div class="chart-wrapper">
+            <canvas id="pollChart"></canvas>
+          </div>
+        </div>
+
+        <div id="hoverPreview" class="hover-preview">
+          <canvas id="hoverCanvas" width="110" height="110"></canvas>
+          <div id="hoverLabels" class="hover-labels"></div>
+        </div>
+      </div>
+
+      <h2 id="majorityTitle" class="majority-title"></h2>
+
+      <div id="gridContainer" class="grid-container">
+        <div id="grid" class="grid"></div>
+      </div>
+
+      <div class="toolbar">
+        <button id="simulateBtn" class="btn">Simulieren</button>
+
+        <div class="settings-wrapper">
+          <button id="settingsBtn" class="btn">Prognose ändern</button>
+
+          <div id="settingsPanel" class="settings-panel">
+            <div class="settings-section">
+              <label for="sampleSlider">Anzahl Simulationen: <span id="sampleReadout">400</span></label>
+              <input type="range" id="sampleSlider" min="100" max="1000" step="50" value="400" />
+            </div>
+            <div id="controls" class="controls"></div>
+
+            <p class="settings-hint">
+              Jede Partei lässt sich unabhängig verschieben. Erst beim Speichern werden alle Werte
+              automatisch auf 100&nbsp;% normiert.
+            </p>
+            <div class="save-row">
+              <span id="sumIndicator" class="sum-indicator">Summe: 100,0 %</span>
+              <button id="saveBtn" class="btn">Speichern</button>
+            </div>
+          </div>
+        </div>
+
+        <button id="sortBtn" class="btn btn-sort">⇅ Nach AfD sortieren</button>
+        <button id="highlightWinsBtn" class="btn">AfD-Siege hervorheben</button>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <p class="source-line">
+        Quelle:
+        <a href="https://dawum.de/Sachsen-Anhalt/Infratest_dimap/2026-07-30/" target="_blank" rel="noopener">
+          dawum.de – Infratest dimap, Sachsen-Anhalt, 30.07.2026
+        </a>
+        &nbsp;·&nbsp;
+        <button id="helpBtn" class="link-btn">Hilfe</button>
+      </p>
+    </footer>
+
+    <div id="helpModal" class="modal-overlay">
+      <div class="modal-content">
+        <button id="helpCloseBtn" class="icon-btn modal-close" aria-label="Schließen">&times;</button>
+        <h3>Was zeigt diese Seite?</h3>
+        <p>
+          Die Umfrage oben stammt von
+          <a href="https://dawum.de/Sachsen-Anhalt/Infratest_dimap/2026-07-30/" target="_blank" rel="noopener"
+            >dawum.de</a
+          >, einer Plattform, die Wahlumfragen verschiedener Institute sammelt. Konkret handelt es sich um eine
+          Erhebung von Infratest dimap für Sachsen-Anhalt vom 30.07.2026.
+        </p>
+
+        <h3>Was bedeuten Balken und Fehlerbalken?</h3>
+        <p>
+          Der farbige Balken zeigt den Umfragewert einer Partei. Die dünne Linie mit den Endkappen (der "Fehlerbalken")
+          zeigt die sogenannte Fehlertoleranz – wie stark das tatsächliche Ergebnis vom Umfragewert typischerweise
+          abweichen könnte.
+        </p>
+
+        <h3>Ist das die Standardabweichung oder der Standardfehler?</h3>
+        <p>
+          Genau genommen keins von beiden im strengen statistischen Sinn. dawum.de nennt es selbst
+          "Fehlertoleranz" und beschreibt sie als bewusst vereinfachte, verallgemeinerte Darstellung des
+          statistischen Fehlers einer Umfrage – nicht als exaktes Konfidenzintervall. Die Formel dazu:
+          <b>Fehlertoleranz = 1 + √(Umfragewert / 10)</b>. Inhaltlich kommt sie einem Standardfehler der Schätzung
+          am nächsten (wie stark der berichtete Wert vom wahren Wert abweichen könnte) und nicht der
+          Standardabweichung einzelner Befragter. Für unsere Simulation nutzen wir sie trotzdem direkt als
+          Streuungsmaß, weil genau diese Schwankungsbreite des wahren Ergebnisses interessiert.
+        </p>
+
+        <h3>Wie werden die simulierten Ergebnisse berechnet?</h3>
+        <p>
+          Die Prozentwerte aller Parteien müssen sich immer zu 100&nbsp;% addieren. Würde man für jede Partei
+          unabhängig eine Zufallszahl ziehen, wäre diese Bedingung meist verletzt. Stattdessen wird eine
+          Dirichlet-Verteilung verwendet – eine Wahrscheinlichkeitsverteilung, deren gezogene Werte sich immer zu
+          100&nbsp;% aufsummieren. Ihre Parameter werden so gewählt, dass die Streuung jeder Partei ungefähr der
+          angegebenen Fehlertoleranz entspricht.
+        </p>
+
+        <h3>Was hat es mit der 5&nbsp;%-Hürde auf sich?</h3>
+        <p>
+          Nach deutschem Wahlrecht ziehen nur Parteien ins Parlament ein, die mindestens 5&nbsp;% der Stimmen
+          erhalten. In jedem simulierten Ergebnis werden daher zunächst alle Parteien unterhalb dieser Hürde entfernt.
+          "Sonstige" wird grundsätzlich immer entfernt, da sich dahinter viele einzelne Kleinparteien verbergen, von
+          denen keine für sich genommen die Hürde nehmen würde. Anschließend werden die verbleibenden Parteien auf
+          100&nbsp;% renormiert.
+        </p>
+
+        <h3>Was bedeutet die gelbe Markierung?</h3>
+        <p>
+          Jedes kleine Ringdiagramm steht für ein simuliertes, mögliches Wahlergebnis. Ist die AfD in diesem
+          Ergebnis nach Anwendung der 5&nbsp;%-Hürde und Renormierung bei 50&nbsp;% oder mehr, wird das gesamte Feld
+          gelb hervorgehoben.
+        </p>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
