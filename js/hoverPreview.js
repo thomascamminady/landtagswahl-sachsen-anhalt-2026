@@ -1,12 +1,11 @@
-import { NAMED_PARTIES, PARTY_COLORS } from "./constants.js";
+import { NAMED_PARTIES, PARTY_COLORS, AFD_MAJORITY_THRESHOLD } from "./constants.js";
 import { formatPercent } from "./format.js";
 
 // Recreating a Chart.js instance on every hovered cell would be wasteful
 // (mouseover fires constantly while the pointer crosses a dense grid), so a
 // single doughnut chart is built once and its data is swapped in-place on
-// hover instead. The preview never gets the yellow majority background,
-// regardless of the hovered outcome, since it's meant as a neutral detail
-// view rather than a repeat of the highlight.
+// hover instead. Like the grid cells, the whole preview gets the yellow
+// majority background when the hovered outcome's AfD share is >= 50%.
 
 let hoverChart = null;
 
@@ -28,6 +27,10 @@ function getHoverChart() {
 
 export function showHoverPreview(outcome) {
   const parties = NAMED_PARTIES.filter((p) => outcome[p] > 0).sort((a, b) => outcome[b] - outcome[a]);
+
+  document
+    .getElementById("hoverPreview")
+    .classList.toggle("majority", outcome.AfD >= AFD_MAJORITY_THRESHOLD);
 
   const chart = getHoverChart();
   chart.data.labels = parties;

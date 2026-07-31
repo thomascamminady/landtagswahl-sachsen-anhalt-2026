@@ -72,16 +72,23 @@ body {
 .hover-preview {
   width: 250px;
   height: 110px;
+  padding: 6px 10px;
   flex-shrink: 0;
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 14px;
+  border-radius: 4px;
+  transition: background-color 0.1s ease;
+}
+
+.hover-preview.majority {
+  background-color: var(--highlight-color);
 }
 
 .hover-preview canvas {
-  width: 110px !important;
-  height: 110px !important;
+  width: 98px !important;
+  height: 98px !important;
   flex-shrink: 0;
 }
 
