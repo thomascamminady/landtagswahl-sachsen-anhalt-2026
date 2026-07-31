@@ -643,6 +643,10 @@ document.getElementById("saveBtn").addEventListener("click", () => {
   updateSumIndicator();
   renderPollChart();
   simulate();
+  // saveBtn lives inside settingsPanel, so the document-level outside-click
+  // handler never sees it as "outside" and never closes the panel - close
+  // it explicitly here instead of relying on that.
+  settingsPanel.classList.remove("open");
 });
 
 document.getElementById("resetBtn").addEventListener("click", resetToDefaults);
