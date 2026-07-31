@@ -21,7 +21,8 @@ const HUERDE = 5.0;
 const AFD_MAJORITY_THRESHOLD = 50.0;
 const AFD_MAJORITY_HIGHLIGHT_COLOR = "#fcff00";
 
-let currentSampleCount = 400;
+const DEFAULT_SAMPLE_COUNT = 400;
+let currentSampleCount = DEFAULT_SAMPLE_COUNT;
 
 // dawum.de documents its own "Fehlertoleranz" (error tolerance) formula for
 // these bars: 1 + sqrt(Umfragewert / 10). It's their own simplified,
@@ -29,7 +30,7 @@ let currentSampleCount = 400;
 // conceptually closer to a standard error/margin of error on the estimate
 // than a standard deviation of individual responses, and explicitly not a
 // rigorous confidence interval. We use it as-is for the initial values.
-const pollData = {
+const DEFAULT_POLL_DATA = {
   AfD: { value: 41.0, sigma: 3.0 },
   CDU: { value: 24.0, sigma: 2.5 },
   Linke: { value: 13.0, sigma: 2.1 },
@@ -38,6 +39,14 @@ const pollData = {
   BSW: { value: 4.0, sigma: 1.6 },
   Sonstige: { value: 6.0, sigma: 1.8 },
 };
+
+// pollData is mutated in place as sliders move, so it needs its own deep
+// copy rather than referencing DEFAULT_POLL_DATA directly - otherwise the
+// "reset to default" snapshot would drift along with live edits.
+const pollData = PARTY_ORDER.reduce((acc, party) => {
+  acc[party] = { ...DEFAULT_POLL_DATA[party] };
+  return acc;
+}, {});
 
 function darkenColor(hex, factor = 0.55) {
   const r = parseInt(hex.slice(1, 3), 16);
@@ -359,7 +368,24 @@ function syncControlValues() {
     const party = row.dataset.party;
     row.querySelector(".value-slider").value = pollData[party].value;
     row.querySelector(".value-readout").textContent = `${pollData[party].value.toFixed(1)}%`;
+    row.querySelector(".sigma-slider").value = pollData[party].sigma;
+    row.querySelector(".sigma-readout").textContent = `±${pollData[party].sigma.toFixed(1)}`;
   });
+}
+
+function resetToDefaults() {
+  PARTY_ORDER.forEach((party) => {
+    pollData[party].value = DEFAULT_POLL_DATA[party].value;
+    pollData[party].sigma = DEFAULT_POLL_DATA[party].sigma;
+  });
+  currentSampleCount = DEFAULT_SAMPLE_COUNT;
+  document.getElementById("sampleSlider").value = DEFAULT_SAMPLE_COUNT;
+  document.getElementById("sampleReadout").textContent = DEFAULT_SAMPLE_COUNT;
+
+  syncControlValues();
+  updateSumIndicator();
+  renderPollChart();
+  simulate();
 }
 
 // --- simulated outcomes grid ---------------------------------------------
@@ -618,6 +644,8 @@ document.getElementById("saveBtn").addEventListener("click", () => {
   renderPollChart();
   simulate();
 });
+
+document.getElementById("resetBtn").addEventListener("click", resetToDefaults);
 
 const gridEl = document.getElementById("grid");
 gridEl.addEventListener("mouseover", (event) => {
