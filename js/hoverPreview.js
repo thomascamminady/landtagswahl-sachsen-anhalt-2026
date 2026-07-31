@@ -4,8 +4,9 @@ import { formatPercent } from "./format.js";
 // Recreating a Chart.js instance on every hovered cell would be wasteful
 // (mouseover fires constantly while the pointer crosses a dense grid), so a
 // single doughnut chart is built once and its data is swapped in-place on
-// hover instead. Like the grid cells, the whole preview gets the yellow
-// majority background when the hovered outcome's AfD share is >= 50%.
+// hover instead. Only the AfD label row (name + percentage) gets the yellow
+// majority highlight when the hovered outcome's AfD share is >= 50% - not
+// the whole panel, so it doesn't overpower the rest of the breakdown.
 
 let hoverChart = null;
 
@@ -28,10 +29,6 @@ function getHoverChart() {
 export function showHoverPreview(outcome) {
   const parties = NAMED_PARTIES.filter((p) => outcome[p] > 0).sort((a, b) => outcome[b] - outcome[a]);
 
-  document
-    .getElementById("hoverPreview")
-    .classList.toggle("majority", outcome.AfD >= AFD_MAJORITY_THRESHOLD);
-
   const chart = getHoverChart();
   chart.data.labels = parties;
   chart.data.datasets[0].data = parties.map((p) => outcome[p]);
@@ -43,6 +40,9 @@ export function showHoverPreview(outcome) {
   parties.forEach((party) => {
     const row = document.createElement("div");
     row.className = "hover-label-row";
+    if (party === "AfD" && outcome.AfD >= AFD_MAJORITY_THRESHOLD) {
+      row.classList.add("majority");
+    }
 
     const name = document.createElement("span");
     name.className = "hover-name";

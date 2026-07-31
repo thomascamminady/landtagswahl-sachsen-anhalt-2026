@@ -125,11 +125,6 @@ body {
   align-items: center;
   gap: 14px;
   border-radius: 4px;
-  transition: background-color 0.1s ease;
-}
-
-.hover-preview.majority {
-  background-color: var(--highlight-color);
 }
 
 .hover-preview canvas {
@@ -152,6 +147,12 @@ body {
   display: flex;
   justify-content: space-between;
   gap: 8px;
+  padding: 0 4px;
+  border-radius: 2px;
+}
+
+.hover-label-row.majority {
+  background-color: var(--highlight-color);
 }
 
 .hover-label-row .hover-swatch {
