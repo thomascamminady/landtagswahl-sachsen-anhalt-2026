@@ -86,24 +86,21 @@ export function renderGrid(outcomes) {
   updateMajorityTitle(outcomes);
 }
 
-const SORT_LABEL = "⇅ Nach AfD sortieren";
-const RANDOMIZE_LABEL = "🔀 Zufällig mischen";
+const SORT_LABEL = "⇅ Nach AfD-Anteil sortieren";
+const RANDOMIZE_LABEL = "Zufällig mischen";
 
+// The only thing that (re-)runs the simulation is "Speichern" (see
+// controls.js) - percentage/sigma/sample-count edits in the settings panel
+// are all staged until then, so there's exactly one, predictable moment
+// where the grid changes. No separate "Simulieren" button and no
+// auto-resimulate-on-drag, which used to fire independently for different
+// sliders and felt inconsistent.
 export function simulate() {
   const outcomes = sampleOutcomes(getSampleCount());
   renderGrid(outcomes);
 
   isSorted = false;
   document.getElementById("sortBtn").textContent = SORT_LABEL;
-}
-
-// Slider drags fire "input" continuously; rebuilding up to 1000 Chart.js pies
-// on every tick would be janky, so re-simulating after a drag is debounced
-// instead of running on every event.
-let simulateDebounceTimer = null;
-export function scheduleSimulate(delay = 150) {
-  clearTimeout(simulateDebounceTimer);
-  simulateDebounceTimer = setTimeout(simulate, delay);
 }
 
 function shuffle(array) {

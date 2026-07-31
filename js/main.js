@@ -1,26 +1,22 @@
 import { normalizeValues, setSampleCount, getSampleCount } from "./pollState.js";
 import { renderPollChart } from "./pollChart.js";
 import { renderControls, syncControlValues, updateSumIndicator, resetToDefaults } from "./controls.js";
-import {
-  simulate,
-  scheduleSimulate,
-  toggleSort,
-  toggleHighlightWins,
-} from "./grid.js";
+import { simulate, toggleSort, toggleHighlightWins } from "./grid.js";
 import { showHoverPreview, clearHoverPreview } from "./hoverPreview.js";
 
 // --- wiring ---------------------------------------------------------------
 
-document.getElementById("simulateBtn").addEventListener("click", simulate);
 document.getElementById("sortBtn").addEventListener("click", toggleSort);
 document.getElementById("highlightWinsBtn").addEventListener("click", toggleHighlightWins);
 
+// Sample count is staged like every other settings-panel value - it only
+// takes effect when "Speichern" is clicked (see below), same as percentages
+// and sigmas. No separate auto-resimulate here.
 const sampleSlider = document.getElementById("sampleSlider");
 const sampleReadout = document.getElementById("sampleReadout");
 sampleSlider.addEventListener("input", () => {
   setSampleCount(parseInt(sampleSlider.value, 10));
   sampleReadout.textContent = getSampleCount();
-  scheduleSimulate();
 });
 
 const settingsBtn = document.getElementById("settingsBtn");

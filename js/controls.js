@@ -1,7 +1,7 @@
 import { PARTY_ORDER, DEFAULT_SAMPLE_COUNT, PARTY_COLORS } from "./constants.js";
 import { pollData, resetPollDataToDefaults } from "./pollState.js";
 import { renderPollChart } from "./pollChart.js";
-import { simulate, scheduleSimulate } from "./grid.js";
+import { simulate } from "./grid.js";
 
 export function renderControls() {
   const container = document.getElementById("controls");
@@ -55,7 +55,6 @@ export function renderControls() {
       pollData[party].sigma = parseFloat(sigmaSlider.value);
       sigmaReadout.textContent = `±${pollData[party].sigma.toFixed(1)}`;
       renderPollChart();
-      scheduleSimulate();
     });
 
     row.appendChild(label);
