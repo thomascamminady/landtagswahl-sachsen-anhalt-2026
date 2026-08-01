@@ -37,12 +37,15 @@ und `http://localhost:8000` öffnen.
 
 ## Datenquelle
 
-[dawum.de – Infratest dimap, Sachsen-Anhalt, 30.07.2026](https://dawum.de/Sachsen-Anhalt/Infratest_dimap/2026-07-30/)
+Daten von [dawum.de – Infratest dimap, Sachsen-Anhalt, 30.07.2026](https://dawum.de/Sachsen-Anhalt/Infratest_dimap/2026-07-30/)
+([Open Database License (ODbL)](https://odbl.dawum.de)). Die Umfragedatenbank
+von dawum.de wurde von Philipp Guttmann zusammengestellt; maßgeblich für die
+Nutzung ist der [vollständige Lizenztext](https://opendatacommons.org/licenses/odbl/1-0/).
 
 ## Credits
 
-- **Daten**: [dawum.de](https://dawum.de/) (Umfragen-Aggregator) und
-  Infratest dimap (durchführendes Institut).
+- **Daten**: [dawum.de](https://dawum.de/) (Umfragen-Aggregator,
+  [ODbL](https://odbl.dawum.de)) und Infratest dimap (durchführendes Institut).
 - **[Chart.js](https://www.chartjs.org/)** – MIT License. Verwendet für den
   Umfrage-Chart, die Ring-/Kreisdiagramme und die Hover-Vorschau.
 - **[Roboto](https://fonts.google.com/specimen/Roboto)** von Google Fonts –
