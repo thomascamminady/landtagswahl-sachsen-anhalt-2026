@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AfD-Mehrheit? – Wahlsimulator Sachsen-Anhalt 2026</title>
+    <title>Schafft die AfD die absolute Mehrheit? – Wahlsimulator Sachsen-Anhalt 2026</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -37,19 +37,49 @@
     </a>
 
     <div class="container">
-      <div class="top-row">
-        <div class="poll-card">
-          <div class="poll-card-header">
-            <h1 class="page-title">AfD-Mehrheit?</h1>
-            <div class="poll-toggle-wrapper">
-              <button id="pollToggleBtn" class="poll-toggle" type="button" aria-haspopup="listbox" aria-expanded="false">
-                <span id="pollToggleLabel">Infratest dimap – 30.07.2026</span>
-                <span class="poll-toggle-caret" aria-hidden="true">⌄</span>
-              </button>
-              <ul id="pollToggleMenu" class="poll-toggle-menu" role="listbox"></ul>
-              <p id="pollToggleStatus" class="poll-toggle-status"></p>
+      <div class="page-header">
+        <div class="page-heading">
+          <h1 class="page-title">Schafft die AfD die absolute Mehrheit in Sachsen-Anhalt?</h1>
+          <div class="poll-toggle-wrapper">
+            <button id="pollToggleBtn" class="btn poll-toggle" type="button" aria-haspopup="listbox" aria-expanded="false">
+              <span id="pollToggleLabel">Infratest dimap – 30.07.2026</span>
+              <span class="poll-toggle-caret" aria-hidden="true">⌄</span>
+            </button>
+            <ul id="pollToggleMenu" class="poll-toggle-menu" role="listbox"></ul>
+            <p id="pollToggleStatus" class="poll-toggle-status"></p>
+          </div>
+        </div>
+
+        <div class="toolbar-actions">
+          <div class="settings-wrapper">
+            <button id="settingsBtn" class="btn">Prognose ändern</button>
+
+            <div id="settingsPanel" class="settings-panel">
+              <div class="settings-section">
+                <label for="sampleSlider">Anzahl Simulationen: <span id="sampleReadout">400</span></label>
+                <input type="range" id="sampleSlider" min="100" max="1000" step="50" value="400" />
+              </div>
+              <div id="controls" class="controls"></div>
+
+              <p class="settings-hint">
+                Jede Partei lässt sich unabhängig verschieben. Erst beim Speichern werden alle Werte
+                auf 100&nbsp;% normiert und die Simulation neu berechnet.
+              </p>
+              <div class="save-row">
+                <button id="resetBtn" class="link-btn">Zurücksetzen</button>
+                <span id="sumIndicator" class="sum-indicator">Summe: 100,0 %</span>
+                <button id="saveBtn" class="btn btn-primary">Speichern</button>
+              </div>
             </div>
           </div>
+
+          <button id="sortBtn" class="btn btn-sort">⇅ Nach AfD sortieren</button>
+          <button id="highlightWinsBtn" class="btn">AfD-Siege hervorheben</button>
+        </div>
+      </div>
+
+      <div class="top-row">
+        <div class="poll-card">
           <div class="chart-wrapper">
             <canvas id="pollChart"></canvas>
           </div>
@@ -66,33 +96,6 @@
       <div id="gridContainer" class="grid-container">
         <div id="grid" class="grid"></div>
       </div>
-
-      <div class="toolbar">
-        <div class="settings-wrapper">
-          <button id="settingsBtn" class="btn">Prognose ändern</button>
-
-          <div id="settingsPanel" class="settings-panel">
-            <div class="settings-section">
-              <label for="sampleSlider">Anzahl Simulationen: <span id="sampleReadout">400</span></label>
-              <input type="range" id="sampleSlider" min="100" max="1000" step="50" value="400" />
-            </div>
-            <div id="controls" class="controls"></div>
-
-            <p class="settings-hint">
-              Jede Partei lässt sich unabhängig verschieben. Erst beim Speichern werden alle Werte
-              auf 100&nbsp;% normiert und die Simulation neu berechnet.
-            </p>
-            <div class="save-row">
-              <button id="resetBtn" class="link-btn">Zurücksetzen</button>
-              <span id="sumIndicator" class="sum-indicator">Summe: 100,0 %</span>
-              <button id="saveBtn" class="btn btn-primary">Speichern</button>
-            </div>
-          </div>
-        </div>
-
-        <button id="sortBtn" class="btn btn-sort">⇅ Nach AfD sortieren</button>
-        <button id="highlightWinsBtn" class="btn">AfD-Siege hervorheben</button>
-      </div>
     </div>
 
     <footer class="site-footer">
@@ -108,10 +111,11 @@
         </a>
         &nbsp;·&nbsp;
         <button id="helpBtn" class="link-btn">Hilfe</button>
-      </p>
-      <p class="disclaimer-line">
-        Keine Rechts- oder Wahlberatung, keine verlässliche Prognose – rein illustrativ, Code und Texte größtenteils
-        KI-generiert.
+        &nbsp;·&nbsp;
+        <span class="disclaimer-inline"
+          >Keine Rechts- oder Wahlberatung, keine verlässliche Prognose – rein illustrativ, größtenteils
+          KI-generiert.</span
+        >
       </p>
     </footer>
 
