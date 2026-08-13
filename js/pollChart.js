@@ -5,7 +5,7 @@ import {
   AFD_MAJORITY_THRESHOLD,
   AFD_MAJORITY_HIGHLIGHT_COLOR,
 } from "./constants.js";
-import { pollData, getCurrentPollMeta } from "./pollState.js";
+import { pollData } from "./pollState.js";
 import { darkenColor, hexToRgba, formatPercent } from "./format.js";
 
 let pollChart = null;
@@ -87,14 +87,12 @@ export function renderPollChart() {
   });
 
   const maxX = Math.max(...meanData.map((v, i) => v + stdData[i])) + 12;
-  const titleText = `Sachsen-Anhalt – ${getCurrentPollMeta().label}`;
 
   if (pollChart) {
     pollChart.data.labels = labels;
     pollChart.data.datasets[0].data = meanData;
     pollChart.data.datasets[0].backgroundColor = meanColors;
     pollChart.options.scales.x.max = maxX;
-    pollChart.options.plugins.title.text = titleText;
     pollChart.update();
     return;
   }
@@ -123,13 +121,6 @@ export function renderPollChart() {
       plugins: {
         legend: { display: false },
         tooltip: { enabled: false },
-        title: {
-          display: true,
-          text: titleText,
-          font: { size: 16, weight: "500" },
-          color: "#000000",
-          padding: { bottom: 12 },
-        },
       },
       scales: {
         x: {

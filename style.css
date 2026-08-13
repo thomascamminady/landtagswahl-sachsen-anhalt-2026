@@ -275,25 +275,116 @@ body {
   accent-color: var(--primary);
 }
 
-.poll-preset-section select {
-  flex: 1;
-  font: inherit;
-  font-size: 13px;
-  padding: 4px 6px;
-  border-radius: 6px;
-  border: 1px solid var(--border-color);
-  background: #ffffff;
+/* The chart's own Chart.js title was replaced by this HTML header - a
+   static, stable title plus a small pill that surfaces the current poll
+   source and doubles as the primary way to switch between it and any
+   live-fetched alternatives, right where you're already looking instead of
+   tucked inside "Prognose ändern" (which stays focused on manually tuning
+   individual values/sigmas). */
+.poll-card-header {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 2px;
+}
+
+.page-title {
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0;
   color: var(--ink);
 }
 
-.poll-preset-status {
-  font-size: 11px;
-  color: #888888;
-  margin: -4px 0 10px;
+.poll-toggle-wrapper {
+  position: relative;
 }
 
-.poll-preset-status.error {
+.poll-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  color: #555555;
+  background: #f2f2f2;
+  border: none;
+  border-radius: 999px;
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.poll-toggle:hover {
+  background: #e6e6e6;
+}
+
+.poll-toggle-caret {
+  display: inline-block;
+  font-size: 12px;
+  line-height: 1;
+  transition: transform 0.15s ease;
+}
+
+.poll-toggle[aria-expanded="true"] .poll-toggle-caret {
+  transform: rotate(180deg);
+}
+
+.poll-toggle-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 20;
+  min-width: 230px;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: var(--elevation-2);
+  opacity: 0;
+  transform: translateY(4px);
+  pointer-events: none;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+
+.poll-toggle-menu.open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.poll-toggle-menu li {
+  padding: 7px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--ink);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.poll-toggle-menu li:hover {
+  background: #f5f5f5;
+}
+
+.poll-toggle-menu li[aria-selected="true"] {
+  background: rgba(63, 81, 181, 0.1);
+  color: var(--primary-dark);
+  font-weight: 500;
+}
+
+.poll-toggle-status {
+  max-width: 220px;
+  margin: 4px 0 0;
+  font-size: 11px;
   color: #b3261e;
+}
+
+.poll-toggle-status:empty {
+  display: none;
 }
 
 .controls {
