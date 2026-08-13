@@ -229,6 +229,13 @@ body {
   color: #777777;
 }
 
+.disclaimer-line {
+  text-align: center;
+  font-size: 10px;
+  color: #aaaaaa;
+  margin: 4px 0 0;
+}
+
 .link-btn {
   background: none;
   border: none;
