@@ -61,6 +61,13 @@
           <button id="settingsBtn" class="btn">Prognose ändern</button>
 
           <div id="settingsPanel" class="settings-panel">
+            <div class="settings-section poll-preset-section">
+              <label for="pollPresetSelect">Prognose</label>
+              <select id="pollPresetSelect">
+                <option value="default">Infratest dimap – 30.07.2026 (Standard)</option>
+              </select>
+            </div>
+            <p id="pollPresetStatus" class="poll-preset-status"></p>
             <div class="settings-section">
               <label for="sampleSlider">Anzahl Simulationen: <span id="sampleReadout">400</span></label>
               <input type="range" id="sampleSlider" min="100" max="1000" step="50" value="400" />
@@ -87,7 +94,7 @@
     <footer class="site-footer">
       <p class="source-line">
         Daten von
-        <a href="https://dawum.de/Sachsen-Anhalt/Infratest_dimap/2026-07-30/" target="_blank" rel="noopener">
+        <a id="footerSourceLink" href="https://dawum.de/Sachsen-Anhalt/Infratest_dimap/2026-07-30/" target="_blank" rel="noopener">
           dawum.de – Infratest dimap, Sachsen-Anhalt, 30.07.2026
         </a>
         (<a href="https://odbl.dawum.de" target="_blank" rel="noopener">Open Database License (ODbL)</a>)
@@ -106,11 +113,12 @@
         <h3>Was zeigt diese Seite?</h3>
         <p>
           Die Umfrage oben stammt von
-          <a href="https://dawum.de/Sachsen-Anhalt/Infratest_dimap/2026-07-30/" target="_blank" rel="noopener"
+          <a id="helpSourceLink" href="https://dawum.de/Sachsen-Anhalt/Infratest_dimap/2026-07-30/" target="_blank" rel="noopener"
             >dawum.de</a
           >, einer Plattform, die Wahlumfragen verschiedener Institute sammelt. Konkret handelt es sich um eine
-          Erhebung von Infratest dimap für Sachsen-Anhalt vom 30.07.2026. Die Umfragedatenbank von dawum.de steht
-          unter der
+          Erhebung von <span id="helpSourceLabel">Infratest dimap für Sachsen-Anhalt vom 30.07.2026</span>. Über
+          "Prognose ändern" lässt sich zwischen dem Standardwert und den jeweils aktuellsten, live von dawum.de
+          geladenen Umfragen der einzelnen Institute wechseln. Die Umfragedatenbank von dawum.de steht unter der
           <a href="https://odbl.dawum.de" target="_blank" rel="noopener">Open Database License (ODbL)</a>.
         </p>
 

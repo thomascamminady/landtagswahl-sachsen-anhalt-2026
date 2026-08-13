@@ -1,4 +1,4 @@
-import { PARTY_ORDER, DEFAULT_POLL_DATA, DEFAULT_SAMPLE_COUNT } from "./constants.js";
+import { PARTY_ORDER, DEFAULT_POLL_DATA, DEFAULT_POLL_META, DEFAULT_SAMPLE_COUNT } from "./constants.js";
 
 // pollData is mutated in place as sliders move, so it needs its own deep
 // copy rather than referencing DEFAULT_POLL_DATA directly - otherwise the
@@ -9,6 +9,26 @@ export const pollData = PARTY_ORDER.reduce((acc, party) => {
 }, {});
 
 let currentSampleCount = DEFAULT_SAMPLE_COUNT;
+
+// Which preset pollData was last loaded from - purely descriptive (chart
+// title, footer citation). Sliders can still drift away from these exact
+// values afterwards; this just labels where the numbers started out.
+let currentPollMeta = DEFAULT_POLL_META;
+
+export function getCurrentPollMeta() {
+  return currentPollMeta;
+}
+
+// Loads a preset's values/sigmas into pollData in place, same as
+// resetPollDataToDefaults, but from an arbitrary { party: {value, sigma} }
+// source (the hardcoded default or a live dawum.de preset).
+export function applyPollPreset(meta, data) {
+  PARTY_ORDER.forEach((party) => {
+    pollData[party].value = data[party].value;
+    pollData[party].sigma = data[party].sigma;
+  });
+  currentPollMeta = meta;
+}
 
 export function getSampleCount() {
   return currentSampleCount;
@@ -35,9 +55,6 @@ export function normalizeValues() {
 }
 
 export function resetPollDataToDefaults() {
-  PARTY_ORDER.forEach((party) => {
-    pollData[party].value = DEFAULT_POLL_DATA[party].value;
-    pollData[party].sigma = DEFAULT_POLL_DATA[party].sigma;
-  });
+  applyPollPreset(DEFAULT_POLL_META, DEFAULT_POLL_DATA);
   currentSampleCount = DEFAULT_SAMPLE_COUNT;
 }

@@ -38,3 +38,24 @@ export const DEFAULT_POLL_DATA = {
   BSW: { value: 4.0, sigma: 1.6 },
   Sonstige: { value: 6.0, sigma: 1.8 },
 };
+
+// Displayed in the chart title/footer and used as the always-available
+// fallback entry in the poll-preset dropdown, so the app still works with a
+// sensible default even if the live dawum.de fetch fails or is slow.
+export const DEFAULT_POLL_META = {
+  id: "default",
+  label: "Infratest dimap – 30.07.2026",
+  sourceUrl: "https://dawum.de/Sachsen-Anhalt/Infratest_dimap/2026-07-30/",
+};
+
+// dawum.de's compact endpoint: one entry per institute/parliament, already
+// reduced to each institute's most recent survey. CORS is open
+// (access-control-allow-origin: *), so this is fetchable straight from the
+// browser - no backend or scheduled job needed to keep it current.
+export const DAWUM_API_URL = "https://api.dawum.de/newest_surveys.json";
+export const DAWUM_PARLIAMENT_ID = "14"; // Sachsen-Anhalt
+
+// Institutes stop reappearing in the "newest surveys" feed once they stop
+// polling a state, so old entries (e.g. from 2018) linger there forever.
+// Only offer presets recent enough to be a plausible current snapshot.
+export const DAWUM_MAX_AGE_DAYS = 90;

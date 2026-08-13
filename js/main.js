@@ -3,6 +3,7 @@ import { renderPollChart } from "./pollChart.js";
 import { renderControls, syncControlValues, updateSumIndicator, resetToDefaults } from "./controls.js";
 import { simulate, toggleSort, toggleHighlightWins } from "./grid.js";
 import { showHoverPreview, clearHoverPreview } from "./hoverPreview.js";
+import { initPollPresets, resetPollPresetSelection } from "./pollPresets.js";
 
 // --- wiring ---------------------------------------------------------------
 
@@ -55,7 +56,10 @@ document.getElementById("saveBtn").addEventListener("click", () => {
   settingsPanel.classList.remove("open");
 });
 
-document.getElementById("resetBtn").addEventListener("click", resetToDefaults);
+document.getElementById("resetBtn").addEventListener("click", () => {
+  resetToDefaults();
+  resetPollPresetSelection();
+});
 
 const gridEl = document.getElementById("grid");
 gridEl.addEventListener("mouseover", (event) => {
@@ -69,3 +73,4 @@ updateSumIndicator();
 renderPollChart();
 clearHoverPreview();
 simulate();
+initPollPresets();

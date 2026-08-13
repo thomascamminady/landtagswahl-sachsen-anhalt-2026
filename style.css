@@ -275,6 +275,27 @@ body {
   accent-color: var(--primary);
 }
 
+.poll-preset-section select {
+  flex: 1;
+  font: inherit;
+  font-size: 13px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: #ffffff;
+  color: var(--ink);
+}
+
+.poll-preset-status {
+  font-size: 11px;
+  color: #888888;
+  margin: -4px 0 10px;
+}
+
+.poll-preset-status.error {
+  color: #b3261e;
+}
+
 .controls {
   display: flex;
   flex-direction: column;
