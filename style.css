@@ -6,6 +6,23 @@
   --ink: #000000;
   --elevation-1: 0 2px 2px rgba(0, 0, 0, 0.16);
   --elevation-2: 0 4px 10px rgba(0, 0, 0, 0.2);
+
+  /* Material-style tonal surfaces: a neutral one for most buttons/chips,
+     an indigo-tinted one reserved for the single primary action
+     (Speichern) so it reads as the default thing to press. */
+  --surface-variant: #f2f2f2;
+  --surface-variant-hover: #e6e6e6;
+  --surface-variant-active: #dcdcdc;
+  --primary-container: #e8eaf6;
+  --primary-container-hover: #dde0f3;
+  --primary-container-active: #d1d5ef;
+  --on-primary-container: #283593;
+
+  /* One shape scale used everywhere instead of full pill/stadium shapes -
+     rounded-rectangle "squircle" corners, keyed to element size. */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
 }
 
 * {
@@ -124,7 +141,7 @@ body {
   flex-direction: row;
   align-items: center;
   gap: 14px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
 }
 
 .hover-preview canvas {
@@ -238,7 +255,7 @@ body {
   z-index: 10;
   width: 360px;
   background: #ffffff;
-  border-radius: 8px;
+  border-radius: var(--radius-lg);
   box-shadow: var(--elevation-2);
   padding: 14px 16px;
   opacity: 0;
@@ -308,16 +325,16 @@ body {
   font-size: 12px;
   font-weight: 500;
   color: #555555;
-  background: #f2f2f2;
+  background: var(--surface-variant);
   border: none;
-  border-radius: 999px;
-  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
   cursor: pointer;
   transition: background 0.15s ease;
 }
 
 .poll-toggle:hover {
-  background: #e6e6e6;
+  background: var(--surface-variant-hover);
 }
 
 .poll-toggle-caret {
@@ -341,7 +358,7 @@ body {
   padding: 6px;
   list-style: none;
   background: #ffffff;
-  border-radius: 8px;
+  border-radius: var(--radius-lg);
   box-shadow: var(--elevation-2);
   opacity: 0;
   transform: translateY(4px);
@@ -358,8 +375,8 @@ body {
 }
 
 .poll-toggle-menu li {
-  padding: 7px 10px;
-  border-radius: 6px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
   font-size: 13px;
   color: var(--ink);
   cursor: pointer;
@@ -371,8 +388,8 @@ body {
 }
 
 .poll-toggle-menu li[aria-selected="true"] {
-  background: rgba(63, 81, 181, 0.1);
-  color: var(--primary-dark);
+  background: var(--primary-container);
+  color: var(--on-primary-container);
   font-weight: 500;
 }
 
@@ -450,22 +467,43 @@ body {
   font-family: inherit;
   font-size: 13px;
   font-weight: 500;
-  padding: 9px 20px;
-  border-radius: 999px;
+  letter-spacing: 0.1px;
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
   border: none;
   color: #444444;
-  background: #f2f2f2;
+  background: var(--surface-variant);
   box-shadow: none;
   cursor: pointer;
-  transition: background 0.15s ease;
+  transition:
+    background 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .btn:hover {
-  background: #e6e6e6;
+  background: var(--surface-variant-hover);
 }
 
 .btn:active {
-  background: #dcdcdc;
+  background: var(--surface-variant-active);
+}
+
+/* The one filled/tonal button on the page (Speichern) - everything else
+   stays neutral so this reads as the default, primary action. */
+.btn-primary {
+  color: var(--on-primary-container);
+  background: var(--primary-container);
+  box-shadow: var(--elevation-1);
+}
+
+.btn-primary:hover {
+  background: var(--primary-container-hover);
+  box-shadow: var(--elevation-2);
+}
+
+.btn-primary:active {
+  background: var(--primary-container-active);
+  box-shadow: var(--elevation-1);
 }
 
 .save-row {
@@ -556,7 +594,7 @@ body {
   width: 90%;
   max-height: 80vh;
   overflow-y: auto;
-  border-radius: 8px;
+  border-radius: var(--radius-lg);
   padding: 28px 30px;
   box-shadow: var(--elevation-2);
   font-size: 14px;
