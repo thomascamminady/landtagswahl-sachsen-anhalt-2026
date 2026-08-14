@@ -38,11 +38,23 @@ function sampleDirichlet(alpha) {
   return gammas.map((g) => g / sum);
 }
 
+// The method-of-moments estimate below only holds when the stated variance
+// is smaller than p*(1-p) - a party dragged near 0% or 100% while its sigma
+// stays non-trivial (both freely draggable in "Prognose ändern", with no
+// cross-validation between them) breaks that assumption and can push the
+// averaged alpha0 to zero or negative. An alpha of 0 for every party makes
+// every sampled outcome collapse to 0/0 = NaN, which the 5%-hurdle filter
+// then silently turns into "every party gets 0%" instead of visibly failing.
+// Flooring alpha0 keeps the distribution well-defined (very spread out)
+// instead of degenerate.
+const MIN_ALPHA0 = 1;
+
 function computeAlpha() {
   const p = PARTY_ORDER.map((party) => pollData[party].value / 100);
   const variance = PARTY_ORDER.map((party) => (pollData[party].sigma / 100) ** 2);
   const alpha0Estimates = p.map((pi, i) => (pi * (1 - pi)) / variance[i] - 1);
-  const alpha0 = alpha0Estimates.reduce((s, v) => s + v, 0) / alpha0Estimates.length;
+  const rawAlpha0 = alpha0Estimates.reduce((s, v) => s + v, 0) / alpha0Estimates.length;
+  const alpha0 = Math.max(rawAlpha0, MIN_ALPHA0);
   return p.map((pi) => pi * alpha0);
 }
 

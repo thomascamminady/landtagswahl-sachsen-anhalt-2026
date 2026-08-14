@@ -28,7 +28,12 @@ settingsBtn.addEventListener("click", (event) => {
   settingsPanel.classList.toggle("open");
 });
 
-document.addEventListener("click", (event) => {
+// mousedown rather than click: dragging the sample-count slider to either
+// end of its track easily releases the mouse outside the (fairly narrow)
+// panel, so a click-based check saw that release as an "outside click" and
+// closed the panel mid-drag. mousedown always fires on the slider itself,
+// right where the drag started, regardless of where it ends.
+document.addEventListener("mousedown", (event) => {
   if (!settingsPanel.contains(event.target) && event.target !== settingsBtn) {
     settingsPanel.classList.remove("open");
   }

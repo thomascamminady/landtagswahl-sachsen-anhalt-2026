@@ -11,12 +11,12 @@ auf der Sonntagsfrage von Infratest dimap (30.07.2026), veröffentlicht auf
   Partei.
 - Lädt beim Öffnen der Seite automatisch die jeweils neueste Umfrage jedes
   Instituts für Sachsen-Anhalt live von der öffentlichen
-  [dawum.de-API](https://api.dawum.de/) nach und stellt sie unter "Prognose
-  ändern" als zusätzliche, wählbare Einträge neben dem statischen
-  Standardwert (Infratest dimap, 30.07.2026) zur Verfügung - kein Backend,
-  kein periodischer Job nötig, da die API direkt aus dem Browser abgerufen
-  wird (CORS ist dort offen). Ist die API nicht erreichbar, bleibt der
-  Standardwert die einzige Option.
+  [dawum.de-API](https://api.dawum.de/) nach und stellt sie über die
+  Schaltfläche oben rechts als zusätzliche, wählbare Einträge neben dem
+  statischen Standardwert (Infratest dimap, 30.07.2026) zur Verfügung - kein
+  Backend, kein periodischer Job nötig, da die API direkt aus dem Browser
+  abgerufen wird (CORS ist dort offen). Ist die API nicht erreichbar, bleibt
+  der Standardwert die einzige Option.
 - Simuliert mögliche Wahlausgänge per Monte-Carlo-Sampling aus einer
   Dirichlet-Verteilung, die die 100&nbsp;%-Summenbedingung respektiert und die
   Streuung jeder Partei an ihre Fehlertoleranz anpasst.
@@ -47,11 +47,12 @@ und `http://localhost:8000` öffnen.
 
 Daten von [dawum.de](https://dawum.de/Sachsen-Anhalt/) ([Open Database
 License (ODbL)](https://odbl.dawum.de)). Standardmäßig angezeigt wird die
-Erhebung von Infratest dimap, Sachsen-Anhalt, 30.07.2026; über "Prognose
-ändern" lassen sich zusätzlich die jeweils neuesten Umfragen der übrigen
-Institute auswählen, die live über [api.dawum.de](https://api.dawum.de/)
-nachgeladen werden. Die Umfragedatenbank von dawum.de wurde von Philipp
-Guttmann zusammengestellt; maßgeblich für die Nutzung ist der
+Erhebung von Infratest dimap, Sachsen-Anhalt, 30.07.2026; über die
+Schaltfläche oben rechts lassen sich zusätzlich die jeweils neuesten
+Umfragen der übrigen Institute auswählen, die live über
+[api.dawum.de](https://api.dawum.de/) nachgeladen werden. Die
+Umfragedatenbank von dawum.de wurde von Philipp Guttmann zusammengestellt;
+maßgeblich für die Nutzung ist der
 [vollständige Lizenztext](https://opendatacommons.org/licenses/odbl/1-0/).
 
 ## Credits
