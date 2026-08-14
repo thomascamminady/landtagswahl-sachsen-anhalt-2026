@@ -133,27 +133,27 @@ body {
    hovered outcome (5 vs 6, depending on whether BSW clears the 5% Huerde) -
    otherwise the panel's own size changed per hover and made it jitter. */
 .hover-preview {
-  width: 250px;
-  height: 110px;
-  padding: 6px 10px;
+  width: 290px;
+  height: 128px;
+  padding: 8px 12px;
   flex-shrink: 0;
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
   border-radius: var(--radius-sm);
 }
 
 .hover-preview canvas {
-  width: 98px !important;
-  height: 98px !important;
+  width: 114px !important;
+  height: 114px !important;
   flex-shrink: 0;
 }
 
 .hover-labels {
   flex: 1;
   height: 100%;
-  font-size: 11px;
+  font-size: 12px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -245,17 +245,17 @@ body {
 }
 
 .settings-wrapper {
-  position: relative;
   display: inline-flex;
 }
 
-/* The settings button lives at the top-right of the page now, so the panel
-   opens downward and is right-anchored (rather than left-anchored) so it
-   stays inside the viewport instead of overshooting past the right edge. */
+/* Centered on .page-header (the nearest positioned ancestor) rather than
+   anchored to the settings button's own small bounding box - anchoring to
+   the button pushed the 360px-wide panel mostly off whichever side had less
+   room. Centering on the full header keeps it predictably in view. */
 .settings-panel {
   position: absolute;
   top: calc(100% + 8px);
-  right: 0;
+  left: 50%;
   z-index: 10;
   width: 360px;
   background: #ffffff;
@@ -263,7 +263,7 @@ body {
   box-shadow: var(--elevation-2);
   padding: 14px 16px;
   opacity: 0;
-  transform: translateY(-8px);
+  transform: translate(-50%, -8px);
   pointer-events: none;
   transition:
     opacity 0.15s ease,
@@ -272,7 +272,7 @@ body {
 
 .settings-panel.open {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate(-50%, 0);
   pointer-events: auto;
 }
 
@@ -296,34 +296,23 @@ body {
   accent-color: var(--primary);
 }
 
-/* The chart's own Chart.js title was replaced by this HTML header - a
-   static, stable title plus a small pill that surfaces the current poll
-   source and doubles as the primary way to switch between it and any
-   live-fetched alternatives, right where you're already looking instead of
-   tucked inside "Prognose ändern" (which stays focused on manually tuning
-   individual values/sigmas). All page-level actions (change forecast, sort,
-   highlight) sit in the same bar, top-right - one control strip instead of
-   splitting it between the top and a toolbar below the grid. Shares
+/* Two stacked rows: the title, centered on its own line, then every
+   page-level control (poll source, change forecast, sort, highlight)
+   together in one right-aligned row underneath - a single control strip
+   instead of splitting actions between the top and a toolbar below the
+   grid. position: relative so the "Prognose ändern" panel below can center
+   itself on the whole header rather than on one small button. Shares
    .top-row's max-width/centering so everything lines up with the chart and
    grid below. */
 .page-header {
+  position: relative;
   flex-shrink: 0;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px 24px;
+  flex-direction: column;
+  gap: 10px;
   width: 100%;
   max-width: 1100px;
   margin: 0 auto 14px;
-}
-
-.page-heading {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 10px;
-  min-width: 0;
 }
 
 .page-title {
@@ -331,12 +320,13 @@ body {
   font-weight: 500;
   margin: 0;
   color: var(--ink);
+  text-align: center;
 }
 
 .toolbar-actions {
-  flex-shrink: 0;
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 10px;
   flex-wrap: wrap;
 }

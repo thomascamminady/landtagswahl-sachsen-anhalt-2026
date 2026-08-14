@@ -21,7 +21,7 @@ export const HUERDE = 5.0;
 export const AFD_MAJORITY_THRESHOLD = 50.0;
 export const AFD_MAJORITY_HIGHLIGHT_COLOR = "#fcff00";
 
-export const DEFAULT_SAMPLE_COUNT = 400;
+export const DEFAULT_SAMPLE_COUNT = 1000;
 
 // dawum.de documents its own "Fehlertoleranz" (error tolerance) formula for
 // these bars: 1 + sqrt(Umfragewert / 10). It's their own simplified,

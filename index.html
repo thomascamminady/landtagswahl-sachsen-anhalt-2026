@@ -38,8 +38,9 @@
 
     <div class="container">
       <div class="page-header">
-        <div class="page-heading">
-          <h1 class="page-title">Schafft die AfD die absolute Mehrheit in Sachsen-Anhalt?</h1>
+        <h1 class="page-title">Schafft die AfD die absolute Mehrheit in Sachsen-Anhalt?</h1>
+
+        <div class="toolbar-actions">
           <div class="poll-toggle-wrapper">
             <button id="pollToggleBtn" class="btn poll-toggle" type="button" aria-haspopup="listbox" aria-expanded="false">
               <span id="pollToggleLabel">Infratest dimap – 30.07.2026</span>
@@ -48,16 +49,14 @@
             <ul id="pollToggleMenu" class="poll-toggle-menu" role="listbox"></ul>
             <p id="pollToggleStatus" class="poll-toggle-status"></p>
           </div>
-        </div>
 
-        <div class="toolbar-actions">
           <div class="settings-wrapper">
             <button id="settingsBtn" class="btn">Prognose ändern</button>
 
             <div id="settingsPanel" class="settings-panel">
               <div class="settings-section">
-                <label for="sampleSlider">Anzahl Simulationen: <span id="sampleReadout">400</span></label>
-                <input type="range" id="sampleSlider" min="100" max="1000" step="50" value="400" />
+                <label for="sampleSlider">Anzahl Simulationen: <span id="sampleReadout">1000</span></label>
+                <input type="range" id="sampleSlider" min="500" max="5000" step="100" value="1000" />
               </div>
               <div id="controls" class="controls"></div>
 
@@ -86,7 +85,7 @@
         </div>
 
         <div id="hoverPreview" class="hover-preview">
-          <canvas id="hoverCanvas" width="110" height="110"></canvas>
+          <canvas id="hoverCanvas" width="130" height="130"></canvas>
           <div id="hoverLabels" class="hover-labels"></div>
         </div>
       </div>
@@ -105,10 +104,6 @@
           dawum.de – Infratest dimap, Sachsen-Anhalt, 30.07.2026
         </a>
         (<a href="https://odbl.dawum.de" target="_blank" rel="noopener">Open Database License (ODbL)</a>)
-        &nbsp;·&nbsp;
-        <a href="https://github.com/thomascamminady/landtagswahl-sachsen-anhalt-2026" target="_blank" rel="noopener">
-          GitHub
-        </a>
         &nbsp;·&nbsp;
         <button id="helpBtn" class="link-btn">Hilfe</button>
         &nbsp;·&nbsp;
@@ -129,10 +124,9 @@
             >dawum.de</a
           >, einer Plattform, die Wahlumfragen verschiedener Institute sammelt. Konkret handelt es sich um eine
           Erhebung von <span id="helpSourceLabel">Infratest dimap für Sachsen-Anhalt vom 30.07.2026</span>. Über die
-          Schaltfläche neben dem Titel oben lässt sich zwischen dem Standardwert und den jeweils aktuellsten, live
-          von dawum.de geladenen Umfragen der einzelnen Institute wechseln; über "Prognose ändern" lassen sich
-          einzelne Werte und Fehlertoleranzen zusätzlich manuell anpassen. Die Umfragedatenbank von dawum.de steht
-          unter der
+          Schaltfläche oben rechts lässt sich zwischen dem Standardwert und den jeweils aktuellsten, live von
+          dawum.de geladenen Umfragen der einzelnen Institute wechseln; über "Prognose ändern" lassen sich einzelne
+          Werte und Fehlertoleranzen zusätzlich manuell anpassen. Die Umfragedatenbank von dawum.de steht unter der
           <a href="https://odbl.dawum.de" target="_blank" rel="noopener">Open Database License (ODbL)</a>.
         </p>
 
