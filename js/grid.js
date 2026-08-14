@@ -26,37 +26,46 @@ export function computeGridDims(n) {
   return { cols, rows };
 }
 
-function buildPieChart(canvas, outcome) {
+// Drawn directly on the canvas rather than through a Chart.js instance per
+// cell: at up to 2000 simulated outcomes, that's 2000 live Chart.js objects
+// (each with its own datasets/plugins/lifecycle) recreated on every
+// "Speichern" - a few arcs on a 2D context do the same job for a fraction
+// of the cost. Same visual result as the previous doughnut config (40%
+// cutout, no border, parties drawn in PARTY_ORDER via NAMED_PARTIES): the
+// cutout stays transparent so the pie-cell's own background (yellow for an
+// AfD-majority outcome) shows through the hole exactly as it did before.
+function drawPieCell(canvas, outcome) {
   const parties = NAMED_PARTIES.filter((p) => outcome[p] > 0);
-  const data = parties.map((p) => outcome[p]);
-  const colors = parties.map((p) => PARTY_COLORS[p]);
+  const total = parties.reduce((sum, p) => sum + outcome[p], 0);
 
-  // A doughnut rather than a full pie: the cutout is transparent, so the
-  // pie-cell's own background (yellow for an AfD-majority outcome) shows
-  // through the hole too, exactly like it already shows through the square
-  // corners around the circle - no extra work needed to color the hole.
-  return new Chart(canvas.getContext("2d"), {
-    type: "doughnut",
-    data: {
-      labels: parties,
-      datasets: [{ data, backgroundColor: colors, borderWidth: 0 }],
-    },
-    options: {
-      responsive: false,
-      animation: false,
-      cutout: "40%",
-      plugins: {
-        legend: { display: false },
-        tooltip: { enabled: false },
-      },
-    },
+  const ctx = canvas.getContext("2d");
+  const { width, height } = canvas;
+  ctx.clearRect(0, 0, width, height);
+  if (total <= 0) return;
+
+  const cx = width / 2;
+  const cy = height / 2;
+  const outerRadius = Math.min(width, height) / 2;
+  const innerRadius = outerRadius * 0.4;
+
+  let angle = -Math.PI / 2; // 12 o'clock, matching Chart.js's default doughnut start
+  parties.forEach((party) => {
+    const nextAngle = angle + (outcome[party] / total) * Math.PI * 2;
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, outerRadius, angle, nextAngle);
+    ctx.arc(cx, cy, innerRadius, nextAngle, angle, true);
+    ctx.closePath();
+    ctx.fillStyle = PARTY_COLORS[party];
+    ctx.fill();
+
+    angle = nextAngle;
   });
 }
 
 export function renderGrid(outcomes) {
   const grid = document.getElementById("grid");
 
-  outcomeCells.forEach(({ chart }) => chart.destroy());
   grid.innerHTML = "";
   outcomeCells = [];
 
@@ -67,7 +76,6 @@ export function renderGrid(outcomes) {
   outcomes.forEach((outcome) => {
     const cell = document.createElement("div");
     cell.className = "pie-cell";
-    cell.dataset.afd = outcome.AfD.toFixed(6);
     cell._outcome = outcome;
     if (outcome.AfD >= AFD_MAJORITY_THRESHOLD) {
       cell.classList.add("majority");
@@ -79,8 +87,8 @@ export function renderGrid(outcomes) {
     cell.appendChild(canvas);
     grid.appendChild(cell);
 
-    const chart = buildPieChart(canvas, outcome);
-    outcomeCells.push({ outcome, cell, chart });
+    drawPieCell(canvas, outcome);
+    outcomeCells.push({ outcome, cell });
   });
 
   updateMajorityTitle(outcomes);

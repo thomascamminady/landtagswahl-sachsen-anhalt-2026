@@ -42,16 +42,40 @@ function setStatus(text) {
   document.getElementById("pollToggleStatus").textContent = text;
 }
 
-function closeMenu() {
-  document.getElementById("pollToggleBtn").setAttribute("aria-expanded", "false");
+// restoreFocus: true when closing via keyboard (Escape, selecting an
+// option) - the button is the sensible place for focus to land back on. Not
+// used for mouse/outside-click closes, where moving focus would be
+// surprising.
+function closeMenu({ restoreFocus = false } = {}) {
+  const btn = document.getElementById("pollToggleBtn");
+  btn.setAttribute("aria-expanded", "false");
   document.getElementById("pollToggleMenu").classList.remove("open");
+  if (restoreFocus) btn.focus();
+}
+
+function openMenu() {
+  document.getElementById("pollToggleBtn").setAttribute("aria-expanded", "true");
+  document.getElementById("pollToggleMenu").classList.add("open");
 }
 
 function toggleMenu() {
-  const btn = document.getElementById("pollToggleBtn");
-  const isOpen = btn.getAttribute("aria-expanded") === "true";
-  btn.setAttribute("aria-expanded", String(!isOpen));
-  document.getElementById("pollToggleMenu").classList.toggle("open", !isOpen);
+  const isOpen = document.getElementById("pollToggleBtn").getAttribute("aria-expanded") === "true";
+  if (isOpen) closeMenu();
+  else openMenu();
+}
+
+function menuItems() {
+  return [...document.querySelectorAll("#pollToggleMenu li")];
+}
+
+// Options aren't in the page's normal tab order (tabindex="-1") - once the
+// menu is open, arrow keys move focus among them instead, matching how a
+// native <select>'s dropdown behaves. focus() still works on a -1 element
+// when called programmatically, which is all this needs.
+function focusMenuItem(index) {
+  const items = menuItems();
+  if (items.length === 0) return;
+  items[(index + items.length) % items.length].focus();
 }
 
 function addMenuItem(preset) {
@@ -60,10 +84,31 @@ function addMenuItem(preset) {
   li.dataset.presetId = preset.meta.id;
   li.textContent = preset.meta.label;
   li.setAttribute("role", "option");
+  li.setAttribute("tabindex", "-1");
   li.setAttribute("aria-selected", String(preset.meta.id === activePresetId));
-  li.addEventListener("click", () => {
+
+  const select = () => {
     applyAndRender(preset.meta.id);
-    closeMenu();
+    closeMenu({ restoreFocus: true });
+  };
+  li.addEventListener("click", select);
+  li.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      select();
+    } else if (event.key === "ArrowDown") {
+      event.preventDefault();
+      focusMenuItem(menuItems().indexOf(li) + 1);
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      focusMenuItem(menuItems().indexOf(li) - 1);
+    } else if (event.key === "Home") {
+      event.preventDefault();
+      focusMenuItem(0);
+    } else if (event.key === "End") {
+      event.preventDefault();
+      focusMenuItem(menuItems().length - 1);
+    }
   });
   menu.appendChild(li);
 }
@@ -84,12 +129,26 @@ export function initPollPresets() {
     event.stopPropagation();
     toggleMenu();
   });
+  // Enter/Space on a <button> already triggers the click handler above via
+  // native button semantics - only ArrowDown needs its own handling, to
+  // jump straight to browsing options like a native <select> would.
+  btn.addEventListener("keydown", (event) => {
+    if (event.key !== "ArrowDown") return;
+    event.preventDefault();
+    openMenu();
+    focusMenuItem(0);
+  });
   document.addEventListener("click", (event) => {
     const wrapper = document.querySelector(".poll-toggle-wrapper");
     if (wrapper && !wrapper.contains(event.target)) closeMenu();
   });
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") closeMenu();
+    // Only react if this menu is actually the thing open - otherwise
+    // pressing Escape to close some unrelated overlay (settings panel,
+    // help modal) would steal focus back to this button along the way.
+    if (event.key === "Escape" && btn.getAttribute("aria-expanded") === "true") {
+      closeMenu({ restoreFocus: true });
+    }
   });
 
   fetchDawumPresets()

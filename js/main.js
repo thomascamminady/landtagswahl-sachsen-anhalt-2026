@@ -66,6 +66,21 @@ document.getElementById("resetBtn").addEventListener("click", () => {
   resetPollPresetSelection();
 });
 
+// Escape closes whichever overlay is open and returns focus to the button
+// that opened it, matching the poll-source dropdown's own Escape handling
+// (see pollPresets.js).
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape") return;
+  if (settingsPanel.classList.contains("open")) {
+    settingsPanel.classList.remove("open");
+    settingsBtn.focus();
+  }
+  if (helpModal.classList.contains("open")) {
+    helpModal.classList.remove("open");
+    helpBtn.focus();
+  }
+});
+
 const gridEl = document.getElementById("grid");
 gridEl.addEventListener("mouseover", (event) => {
   const cell = event.target.closest(".pie-cell");
