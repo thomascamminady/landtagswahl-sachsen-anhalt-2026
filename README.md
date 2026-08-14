@@ -25,7 +25,7 @@ auf der Sonntagsfrage von Infratest dimap (30.07.2026), veröffentlicht auf
 - Stellt jedes simulierte Ergebnis als kleines Ringdiagramm dar; Ergebnisse
   mit absoluter AfD-Mehrheit werden gelb hervorgehoben.
 - Erlaubt es, Umfragewerte und Fehlertoleranzen frei anzupassen (normiert erst
-  beim Speichern auf 100&nbsp;%) und die Anzahl der Simulationen (500–5000)
+  beim Speichern auf 100&nbsp;%) und die Anzahl der Simulationen (500–2000)
   einzustellen.
 
 Näheres zur Methodik gibt es im "Hilfe"-Dialog auf der Seite selbst.

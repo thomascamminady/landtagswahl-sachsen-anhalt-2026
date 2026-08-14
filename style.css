@@ -296,14 +296,13 @@ body {
   accent-color: var(--primary);
 }
 
-/* Two stacked rows: the title, centered on its own line, then every
-   page-level control (poll source, change forecast, sort, highlight)
-   together in one right-aligned row underneath - a single control strip
-   instead of splitting actions between the top and a toolbar below the
-   grid. position: relative so the "Prognose ändern" panel below can center
-   itself on the whole header rather than on one small button. Shares
-   .top-row's max-width/centering so everything lines up with the chart and
-   grid below. */
+/* Two stacked, centered rows: the title, then every page-level control
+   (poll source, change forecast, sort, highlight) together underneath - a
+   single control strip instead of splitting actions between the top and a
+   toolbar below the grid. position: relative so the "Prognose ändern"
+   panel below can center itself on the whole header rather than on one
+   small button. Shares .top-row's max-width/centering so everything lines
+   up with the chart and grid below. */
 .page-header {
   position: relative;
   flex-shrink: 0;
@@ -326,7 +325,7 @@ body {
 .toolbar-actions {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 10px;
   flex-wrap: wrap;
 }
